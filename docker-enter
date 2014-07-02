@@ -5,5 +5,7 @@ if [ -z "$1" ]; then
 else
     PID=$(docker inspect --format {{.State.Pid}} "$1")
     shift
-    nsenter --target $PID --mount --uts --ipc --net --pid -- "$@"
+    NSENTER=`which nsenter`
+    NSENTER=${NSENTER:-./nsenter}
+    ${NSENTER} --target $PID --mount --uts --ipc --net --pid -- "$@"
 fi
